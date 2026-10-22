@@ -2,31 +2,37 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // ... (aquí va el fillable que ya trae por defecto)
+
+    // Un usuario tiene un perfil de vendedor (si decide vender)
+    public function sellerProfile()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(SellerProfile::class);
+    }
+
+    // Un usuario vende muchos productos
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'seller_id');
+    }
+
+    // Un usuario compra muchas órdenes
+    public function ordersAsBuyer()
+    {
+        return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+    // Un usuario (vendedor) tiene muchas ventas a través de los items
+    public function sales()
+    {
+        return $this->hasMany(OrderItem::class, 'seller_id');
     }
 }
