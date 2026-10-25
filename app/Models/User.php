@@ -10,7 +10,29 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // ... (aquí va el fillable que ya trae por defecto)
+    //permite crear usuarios mediante Eloquent utilizando los cuatro campos obligatorios
+    protected $fillable = [
+        'name',
+        'email',
+        'role',
+        'password',
+    ];
+
+    //evita que la contraseña y el token se incluyan al convertir el usuario a JSON.
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    //convierte la fecha de verificación a un objeto de fecha y aplica hashing a la contraseña cuando se asigna mediante Eloquent.
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
 
     // Un usuario tiene un perfil de vendedor (si decide vender)
     public function sellerProfile()
