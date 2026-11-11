@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('name'); // Nombre de la categoría
+            $table->string('slug')->unique(); // Para URLs amigables
+            $table->text('description')->nullable(); // Descripción opcional
+            $table->unsignedBigInteger('parent_id')->nullable(); // Para subcategorías
+            $table->foreign('parent_id')->references('id')->on('categories')->nullable(); // Llave foránea
+            $table->timestamps(); // created_at y updated_at
         });
     }
 
