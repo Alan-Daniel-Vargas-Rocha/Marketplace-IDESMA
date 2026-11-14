@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -9,15 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->string('name')->unique();
-        });
+        if (!Schema::hasColumn('categories', 'name')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->string('name')->unique();
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn('name');
-        });
+        // No eliminar name, ya que puede pertenecer
+        // a la migración original de categories.
     }
 };
