@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Catálogo de electrónicos de Marketplace IDESMA.">
+  <title>Marketplace IDESMA</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header>
+    <div class="envoltura cabecera">
+      <a class="marca" href="#catalogo">Marketplace <span>IDESMA</span></a>
+      <nav id="navegacion" aria-label="Cuenta y tienda"></nav>
+    </div>
+  </header>
+
+  <main class="envoltura">
+    <section id="centro-dev" class="pila" aria-labelledby="titulo-centro-dev" hidden></section>
+    <section id="vista-vendedor" class="pila" aria-label="Panel del vendedor" hidden></section>
+    <section class="portada" aria-labelledby="titulo">
+      <div class="portada-texto">
+        <h1 id="titulo">Electrónicos para tu próximo proyecto.</h1>
+        <p>Encuentra computadoras, componentes y accesorios de los vendedores de IDESMA.</p>
+        <a class="boton" href="#catalogo">Explorar catálogo</a>
+      </div>
+      <div class="portada-foto" aria-hidden="true"></div>
+    </section>
+
+    <p id="aviso" class="estado" role="status"></p>
+    <section class="catalogo" id="catalogo" aria-labelledby="titulo-catalogo">
+      <div class="barra">
+        <h2 id="titulo-catalogo">Catálogo</h2>
+        <div class="filtros">
+          <label>Buscar <input id="buscar" type="search" placeholder="Cable, monitor, teclado…"></label>
+          <label>Categoría <select id="filtro"><option value="">Todas</option></select></label>
+        </div>
+      </div>
+      <p id="estado-catalogo" class="estado" role="status"></p>
+      <div id="productos" class="rejilla"></div>
+    </section>
+  </main>
+
+  <dialog id="dialogo" aria-labelledby="dialogo-titulo">
+    <div class="dialogo-cabecera">
+      <h2 id="dialogo-titulo"></h2>
+      <button class="claro" type="button" data-accion="cerrar">Cerrar</button>
+    </div>
+    <p id="estado-dialogo" class="estado" role="status"></p>
+    <div id="contenido" class="pila"></div>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

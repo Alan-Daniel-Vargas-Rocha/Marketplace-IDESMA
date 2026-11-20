@@ -1,60 +1,153 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Marketplace IDESMA
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Cómo correr el programa
 
-## About Laravel
+Primero abran Docker Desktop* y esperen a que esté listo. Luego abran dos ventanas de PowerShell, una para el backend y otra para el frontend. Los comandos de abajo suponen que guardaron el proyecto en `Marketplace-IDESMA` dentro de su carpeta de usuario. Si lo tienen en otro lado, cambien la ruta de `Set-Location`.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Si es la primera vez que lo corren** baje al renglon 105 y haga ese paso primero.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Activar el backend
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+En la primera ventana pongan este código. Aquí levantamos Laravel para que la tienda pueda consultar los productos, iniciar sesión y guardar los pedidos.
 
-## Learning Laravel
+```powershell
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Set-Location "$env:USERPROFILE\Marketplace-IDESMA\backend"
+docker run --rm --name marketplace-idesma -p 127.0.0.1:8000:8000 --mount "type=bind,source=$($PWD.Path),target=/app" -w /app composer:2 php artisan serve --host=0.0.0.0 --port=8000
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Cuando salga **Server running**, dejen esa ventana abierta. Si quieren checar que el backend responde, abran [la API de productos](http://localhost:8000/api/products).
 
-## Contributing
+### 2. Activar el frontend
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+En la segunda ventana pongan este código. Aquí levantamos la página de la tienda.
 
-## Code of Conduct
+```powershell
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Set-Location "$env:USERPROFILE\Marketplace-IDESMA\frontend"
+docker run --rm --name idesma-frontend -p 127.0.0.1:5173:5173 --mount "type=bind,source=$($PWD.Path),target=/app,readonly" -w /app composer:2 php -S 0.0.0.0:5173
 
-## Security Vulnerabilities
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ya con los dos corriendo, abran [la tienda](http://localhost:5173/) en el navegador. Dejen las dos ventanas abiertas mientras estén usando el programa.
 
-## License
+**Una cosa.** Si Docker dice que el nombre ya está en uso, pongan `docker ps`. Si ven `marketplace-idesma` o `idesma-frontend` con estado `Up`, ese servidor ya está corriendo.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# Marketplace-IDESMA
-# Marketplace-IDESMA
+## Modos de la tienda
+
+A continuación tenemos los modos que salen según la cuenta con la que entren.
+
+### Comprador
+
+Aquí se queda la tienda normal, en color salmon. Pueden buscar productos, abrir su detalle y agregarlos al carrito. El circulito del carrito marca cuántas unidades llevan. Cuando confirmen el pedido, lo pueden checar en **Mis pedidos**.
+
+**Nota.** El pedido queda como **Pendiente de pago**. En esta versión se registra el pedido y se descuenta el stock.
+
+### Vendedor
+
+Si entran como vendedor, la página cambia a un panel verde donde salen sus artículos y sus pedidos. Desde Publicar producto* pueden agregar más artículos, y desde Mis productos pueden editar lo que ya publicaron.
+
+En Pedidos recibidos pueden checar quién pidió su producto y cuántas unidades pidió. En el panel también salen las unidades vendidas y las pendientes de pago. Las vendidas se cuentan cuando el pedido aparece como pagado.
+
+### Modo dev
+
+Para abrirlo, entren a [la tienda en modo dev](http://localhost:5173/?dev=1). Van a ver la barra de diferente color y el Centro de pruebas.
+
+Desde Cuentas de prueba pueden crear un comprador y un vendedor, o agregar una cuenta que ya tengan. Si las dos cuentas ya iniciaron sesión en esa pestaña, pueden brincar entre ellas para vender desde una y comprar desde la otra.
+
+Si entran como Administrador, en el Centro de pruebas salen los correos y roles registrados. También pueden abrir Productos y vendedores para ver quién publicó cada artículo y con qué correo. Si una cuenta todavía no inició sesión en esa pestaña, se pide su contraseña al entrar.
+
+A continuacion se muestra como crear una cuenta admin.
+
+## Como crear una cuenta de administrador
+
+Si descargaron el proyecto de GitHub, cada quien tiene su propia base de datos local. Para entrar como administrador, primero corran las migraciones y levanten el backend. Luego abran otra ventana de PowerShell y pongan este codigo:
+
+```powershell
+#aqui inicia
+
+$crearAdmin = @'
+$email = 'admin-'.strtolower(\Illuminate\Support\Str::random(8)).'@example.test';
+$password = \Illuminate\Support\Str::random(24);
+
+// ======== Aqui creamos la cuenta admin y guardamos su contraseña con hash.
+$user = \App\Models\User::create([
+    'name' => 'Administrador IDESMA',
+    'email' => $email,
+    'password' => \Illuminate\Support\Facades\Hash::make($password),
+    'role' => 'admin',
+]);
+
+echo 'Correo: '.$user->email.PHP_EOL;
+echo 'Contraseña: '.$password.PHP_EOL;
+'@
+
+docker exec marketplace-idesma php artisan tinker "--execute=$crearAdmin"
+
+#aqui termina
+```
+
+Guarden el correo y la contraseña que salen en PowerShell. Luego entren a [la tienda en modo dev](http://localhost:5173/?dev=1) y usen esos datos en Iniciar sesion. Si todo salio bien, debe aparecer Administrador junto al nombre y se deben ver las opciones del Centro de pruebas.
+
+Una cosa. La misma cuenta les sirve cada vez que entren mientras conserven su base de datos. Si vuelven a correr el codigo, se crea otro administrador.
+
+Antes de subir los cambios, chequen con `git status --short` que `backend/.env` y `backend/database/database.sqlite` queden fuera del commit. En el README va el comando para crear la cuenta. El correo y la contraseña que les salieron se quedan con ustedes.
+
+### Cómo probar el flujo completo
+
+1. En modo dev, entren con una cuenta de vendedor y publiquen un artículo con stock.
+2. Abran **Cuentas de prueba** y cambien a una cuenta de comprador.
+3. Busquen el artículo, agréguenlo al carrito y confirmen el pedido.
+4. Chequen que el pedido salga en **Mis pedidos**.
+5. Brinquen otra vez a la cuenta de vendedor y abran **Pedidos recibidos**. Ahí debe salir quién lo pidió. También pueden revisar que el stock haya bajado.
+
+## Si es la primera vez que lo corren
+
+Si acaban de clonar el proyecto, preparen Laravel antes de activar el backend. Pongan esto en PowerShell con Docker Desktop abierto.
+
+```powershell
+#inicia aqui.
+
+Set-Location "$env:USERPROFILE\Marketplace-IDESMA\backend"
+
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
+if (!(Test-Path 'database\database.sqlite')) {
+    New-Item -ItemType File 'database\database.sqlite' | Out-Null
+}
+
+$opcionesDocker = @(
+    '--rm',
+    '--mount', "type=bind,source=$($PWD.Path),target=/app",
+    '-w', '/app'
+)
+
+docker run @opcionesDocker composer:2 composer install --ignore-platform-reqs --no-interaction --no-scripts
+docker run @opcionesDocker composer:2 php artisan package:discover
+
+if (Select-String -Path .env -Pattern '^APP_KEY=\s*$' -Quiet) {
+    docker run @opcionesDocker composer:2 php artisan key:generate
+}
+
+docker run @opcionesDocker composer:2 php artisan migrate --force --quiet
+docker run @opcionesDocker composer:2 php artisan tinker '--execute=app(\Database\Seeders\ElectronicsCategorySeeder::class)->run();'
+
+#termina aqui.
+```
+
+Cuando termine, regresen a los pasos **Activar el backend** y **Activar el frontend**. La primera vez el catálogo puede estar vacío hasta que un vendedor publique un producto.
+
+## Cómo detener el programa
+
+Cuando terminen, presionen **Ctrl+C** en cada ventana donde levantaron los servidores. También pueden detenerlos desde otra ventana de PowerShell.
+
+```powershell
+#inicia
+docker stop idesma-frontend marketplace-idesma
+#trermina
+```
+
+## Dónde está cada cosa
+
+- `backend/` tiene Laravel, la API, los servicios y las migraciones.
+- `frontend/` tiene la página de la tienda en `index.html`.
