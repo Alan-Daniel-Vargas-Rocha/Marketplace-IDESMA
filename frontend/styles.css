@@ -1,0 +1,239 @@
+/* ======== Aqui estan los colores y bordes de toda la tienda. */
+    :root {
+      --fondo: #fff9f6;
+      --blanco: #fff;
+      --texto: #302422;
+      --secundario: #6d5854;
+      --salmon: #efad9e;
+      --salmon-claro: #fce0d7;
+      --salmon-oscuro: #ab4636;
+      --borde: #edd7d0;
+      --sombra: 0 12px 36px #66312614;
+      --radio: 1.15rem;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      background: var(--fondo);
+      color: var(--texto);
+      font: 1rem/1.55 system-ui, sans-serif;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { line-height: 1.14; }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    button, .boton {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .65rem 1rem;
+      border: 1px solid transparent;
+      border-radius: .8rem;
+      background: var(--salmon-oscuro);
+      color: var(--blanco);
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    button:hover:not(:disabled), .boton:hover { filter: brightness(.94); }
+    button:disabled { opacity: .56; cursor: not-allowed; }
+    .suave { background: var(--salmon-claro); color: var(--texto); }
+    .claro { background: var(--blanco); color: var(--texto); border-color: var(--borde); }
+    :focus-visible { outline: 3px solid var(--salmon-oscuro); outline-offset: 3px; }
+    .envoltura { width: min(72rem, calc(100% - 2rem)); margin-inline: auto; }
+    header { background: var(--blanco); border-bottom: 1px solid var(--borde); }
+    .cabecera { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1rem; }
+    .marca { font-size: 1.15rem; font-weight: 800; letter-spacing: -.04em; text-decoration: none; }
+    .marca span { color: var(--salmon-oscuro); }
+    nav, .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+    main { padding-block: 1.5rem 3rem; }
+    .portada {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      min-height: 19rem;
+      overflow: hidden;
+      border-radius: 1.6rem;
+      background: var(--salmon-claro);
+    }
+    .portada-texto { align-self: center; padding: clamp(1.3rem, 4vw, 3.5rem); }
+    .portada h1 { font-size: clamp(2.2rem, 5.5vw, 4.5rem); letter-spacing: -.06em; }
+    .portada p { max-width: 35ch; margin-block: .9rem 1.25rem; color: var(--secundario); }
+    .portada-foto {
+      min-height: 12rem;
+      background: #ba776c url('https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1100&q=82') center / cover no-repeat;
+    }
+    .catalogo { margin-top: 2rem; }
+    .rol-activo[data-rol="comprador"] { background: #e2effd; color: #214f82; border-color: #b9d2ef; }
+    .rol-activo[data-rol="vendedor"] { background: #e2f3e8; color: #21593b; border-color: #b9d9c7; }
+    .rol-activo[data-rol="admin"], .rol-activo[data-rol="administrador"] {
+      background: #eee5fb; color: #5a367e; border-color: #d4c2eb;
+    }
+    .rol-activo[data-rol="ambos"] { background: #fff1d6; color: #744d16; border-color: #ecd3a3; }
+    .cuenta-activa { display: inline-flex; align-items: center; flex-wrap: wrap; gap: .45rem; }
+    .rol-activo {
+      padding: .22rem .65rem;
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      background: var(--salmon-claro);
+      color: var(--texto);
+      font-size: .875rem;
+      font-weight: 700;
+    }
+    .barra { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+    .filtros, .campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+    label { display: grid; gap: .3rem; font-size: .94rem; font-weight: 650; }
+    input, select, textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--borde);
+      border-radius: .7rem;
+      padding: .65rem .75rem;
+      background: var(--blanco);
+      color: var(--texto);
+    }
+    select {
+      appearance: none;
+      padding-right: 2rem;
+      background-image: linear-gradient(45deg, transparent 50%, var(--salmon-oscuro) 50%), linear-gradient(135deg, var(--salmon-oscuro) 50%, transparent 50%);
+      background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+      background-size: 5px 5px;
+      background-repeat: no-repeat;
+    }
+    textarea { resize: vertical; }
+    .amplio { grid-column: 1 / -1; }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }
+    .tarjeta, .vacio, .fila {
+      padding: 1rem;
+      border: 1px solid var(--borde);
+      border-radius: var(--radio);
+      background: var(--blanco);
+    }
+    .tarjeta { display: grid; align-content: start; gap: .65rem; box-shadow: var(--sombra); }
+    .categoria { color: var(--salmon-oscuro); font-weight: 700; }
+    .precio { font-size: 1.3rem; font-weight: 750; }
+    .muted { color: var(--secundario); }
+    .vacio { grid-column: 1 / -1; }
+    .estado { margin-block: .75rem; color: var(--secundario); }
+    .estado:empty { display: none; }
+    .error { color: #9b2d24; }
+    dialog {
+      width: min(40rem, calc(100% - 2rem));
+      max-height: 88vh;
+      overflow: auto;
+      border: 1px solid var(--borde);
+      border-radius: 1.4rem;
+      padding: 1.25rem;
+      background: var(--fondo);
+      color: var(--texto);
+      box-shadow: var(--sombra);
+    }
+    dialog::backdrop { background: #2e1c1a88; }
+    .dialogo-cabecera { display: flex; justify-content: space-between; align-items: start; gap: 1rem; margin-bottom: 1rem; }
+    .pila { display: grid; gap: .85rem; }
+    .fila { display: grid; gap: .55rem; }
+    .fila input { max-width: 8rem; }
+    .fila form { display: flex; align-items: end; gap: .55rem; flex-wrap: wrap; }
+
+    @media (max-width: 680px) {
+      .cabecera { align-items: start; flex-direction: column; }
+      .portada { grid-template-columns: 1fr; }
+      .portada-foto { min-height: 10rem; }
+      .filtros { width: 100%; }
+    }
+    @media (max-width: 390px) { .filtros, .campos { grid-template-columns: 1fr; } }
+      /* ======== Aqui toda la barra se pone ambar cuando andamos en modo dev. */
+    body.modo-dev header {
+      background: #fff3d6;
+      border-bottom-color: #e6ba65;
+      color: #50330f;
+    }
+
+    body.modo-dev header .marca span { color: #87520d; }
+
+    body.modo-dev header button {
+      background: #f4cf83;
+      border-color: #ddb365;
+      color: #50330f;
+    }
+
+    body.modo-dev header button.claro { background: #fff9eb; }
+
+    body.modo-dev header .rol-activo[data-rol] {
+      background: #f8dc9b;
+      border-color: #ddb365;
+      color: #50330f;
+    }
+
+    body.modo-dev header :focus-visible { outline-color: #87520d; }
+
+      /* ======== Aqui va el circulito abajo a la derecha del boton Carrito. */
+    #navegacion .boton-carrito { position: relative; }
+    #navegacion .contador-carrito {
+      position: absolute;
+      right: -.38rem;
+      bottom: -.36rem;
+      display: grid;
+      place-items: center;
+      width: 1.55rem;
+      height: 1.55rem;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #ab4636;
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 800;
+      line-height: 1;
+      pointer-events: none;
+    }
+    body.modo-dev #navegacion .contador-carrito {
+      background: #80500d;
+      border-color: #fff3d6;
+    }
+      /* ======== Aqui cambia el color de la tienda cuando entramos a vender. */
+    body.vendiendo {
+      --fondo: #f1f6f2;
+      --texto: #1e372c;
+      --secundario: #486456;
+      --salmon-oscuro: #285d47;
+      --salmon-claro: #dbece2;
+      --borde: #c9ddd0;
+    }
+    #vista-vendedor {
+      padding: clamp(1rem, 4vw, 2.6rem);
+      border: 1px solid #bad2c3;
+      border-radius: 1.6rem;
+      background: #e4f0e8;
+    }
+    #vista-vendedor h1 { font-size: clamp(2rem, 5vw, 3.5rem); color: #214d39; }
+    #vista-vendedor .tarjeta { box-shadow: none; }
+    #vista-vendedor .tarjeta-ventas { background: #f4fbf6; }
+    #vista-vendedor .precio { color: #285d47; }
+      /* ======== Aqui cambiamos los tonos del modo dev a ambar y grafito. */
+    body.modo-dev { background: #fff8e9; }
+    body.modo-dev header { background: #ffedc3; border-bottom-color: #d9ab53; }
+    body.modo-dev #panel-dev { display: none; }
+
+    #centro-dev {
+      margin-bottom: 1.3rem;
+      padding: clamp(1.1rem, 4vw, 2.3rem);
+      border: 1px solid #544532;
+      border-radius: 1.6rem;
+      background: #2e2923;
+      color: #fff7e8;
+    }
+    #centro-dev h1 { font-size: clamp(1.85rem, 4vw, 3rem); }
+    #centro-dev .tarjeta, #centro-dev .fila {
+      border-color: #675642;
+      background: #40362c;
+      color: #fff7e8;
+      box-shadow: none;
+    }
+    #centro-dev .precio { color: #ffd485; font-size: 1.65rem; }
+    #centro-dev .muted { color: #f0dfc8; }
+    #centro-dev .correo-dev { overflow-wrap: anywhere; }
+    #centro-dev button { background: #ffd485; color: #3a2916; }
+    #centro-dev button.claro { background: #fff6e3; }
+    #centro-dev :focus-visible { outline-color: #ffd485; }
+  
